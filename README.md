@@ -1,7 +1,7 @@
 # SPDX to Dependency Graph Action
 
 This repository makes it easy to upload an SPDX SBOM to GitHub's dependency submission API. This lets you quickly receive Dependabot alerts for package manifests which GitHub doesn't directly support like pnpm or Paket by using existing off-the-shelf SBOM generators.
-
+Make sure to bump the `version` in [package.json](package.json) before any release.
 
 ### Example workflow
 
