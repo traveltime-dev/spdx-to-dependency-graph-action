@@ -32,7 +32,7 @@ jobs:
           ./tools/generate_sboms.sh
 
       - name: Submit SBOMs to GitHub Dependency Graph
-        uses: traveltime-dev/spdx-to-dependency-graph-action@v0.0.4
+        uses: traveltime-dev/spdx-to-dependency-graph-action@v0.0.6
         with:
           filePath: ./sboms/
           filePattern: "*.json"
