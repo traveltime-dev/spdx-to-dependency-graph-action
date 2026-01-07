@@ -129,11 +129,10 @@ function encodeVersion(purl) {
   const version = afterAt.substring(0, versionEnd);
   const suffix = afterAt.substring(versionEnd);
 
-  // Encode special characters in version
-  const encodedVersion = version
-    .replace(/%(?![0-9A-Fa-f]{2})/g, "%25") // encode % that aren't already part of encoding
-    .replace(/\+/g, "%2B")
-    .replace(/ /g, "%20");
+  const encodedVersion = encodeURIComponent(version)
+    .replace(/%2D/gi, "-")
+    .replace(/%2E/gi, ".")
+    .replace(/%5F/gi, "_");
 
   return beforeVersion + encodedVersion + suffix;
 }

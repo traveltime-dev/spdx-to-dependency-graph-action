@@ -35373,7 +35373,7 @@ module.exports = parseParams
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"spdx-to-dependency-graph-action","version":"0.0.5","description":"SPDX to Dependency Graph Action","main":"index.js","scripts":{"lint":"eslint .","prepare":"ncc build index.js -o dist --source-map --license licenses.txt","test":"jest","all":"npm run lint && npm run prepare && npm run test"},"repository":{"type":"git","url":"git+https://github.com/traveltime-dev/spdx-to-dependency-graph-action.git"},"keywords":["GitHub","Actions","JavaScript"],"author":"","license":"MIT","bugs":{"url":"https://github.com/traveltime-dev/spdx-to-dependency-graph-action/issues"},"homepage":"https://github.com/traveltime-dev/spdx-to-dependency-graph-action#readme","dependencies":{"@actions/core":"^1.10.0","@actions/github":"^6.0.1","@github/dependency-submission-toolkit":"^2.0.5","fs":"^0.0.1-security"},"devDependencies":{"@vercel/ncc":"^0.36.1","eslint":"^8.34.0","jest":"^29.4.2"}}');
+module.exports = JSON.parse('{"name":"spdx-to-dependency-graph-action","version":"0.0.6","description":"SPDX to Dependency Graph Action","main":"index.js","scripts":{"lint":"eslint .","prepare":"ncc build index.js -o dist --source-map --license licenses.txt","test":"jest","all":"npm run lint && npm run prepare && npm run test"},"repository":{"type":"git","url":"git+https://github.com/traveltime-dev/spdx-to-dependency-graph-action.git"},"keywords":["GitHub","Actions","JavaScript"],"author":"","license":"MIT","bugs":{"url":"https://github.com/traveltime-dev/spdx-to-dependency-graph-action/issues"},"homepage":"https://github.com/traveltime-dev/spdx-to-dependency-graph-action#readme","dependencies":{"@actions/core":"^1.10.0","@actions/github":"^6.0.1","@github/dependency-submission-toolkit":"^2.0.5","fs":"^0.0.1-security"},"devDependencies":{"@vercel/ncc":"^0.36.1","eslint":"^8.34.0","jest":"^29.4.2"}}');
 
 /***/ })
 
@@ -35608,11 +35608,10 @@ function encodeVersion(purl) {
   const version = afterAt.substring(0, versionEnd);
   const suffix = afterAt.substring(versionEnd);
 
-  // Encode special characters in version
-  const encodedVersion = version
-    .replace(/%(?![0-9A-Fa-f]{2})/g, "%25") // encode % that aren't already part of encoding
-    .replace(/\+/g, "%2B")
-    .replace(/ /g, "%20");
+  const encodedVersion = encodeURIComponent(version)
+    .replace(/%2D/gi, "-")
+    .replace(/%2E/gi, ".")
+    .replace(/%5F/gi, "_");
 
   return beforeVersion + encodedVersion + suffix;
 }
