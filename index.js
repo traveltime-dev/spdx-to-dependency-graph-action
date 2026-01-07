@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 const glob = require('glob');
+const { version } = require('./package.json');
 
 import {
   PackageCache,
@@ -17,8 +18,8 @@ async function run() {
   
   let snapshot = new Snapshot({
       name: "spdx-to-dependency-graph-action",
-      version: "0.0.1",
-      url: "https://github.com/jhutchings1/spdx-to-dependency-graph-action",
+      version: version,
+      url: "https://github.com/traveltime-dev/spdx-to-dependency-graph-action",
   }, 
   github.context,
   {
