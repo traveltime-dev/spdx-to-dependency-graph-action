@@ -1,44 +1,39 @@
-> **Note** 
-> 
-> This repository is archived. Please use https://github.com/advanced-security/spdx-dependency-submission-action going forward
-
 # SPDX to Dependency Graph Action
 
-This repository makes it easy to upload an SPDX SBOM to GitHub's dependency submission API. This lets you quickly receive Dependabot alerts for package manifests which GitHub doesn't directly support like pnpm or Paket by using existing off-the-shelf SBOM generators. 
+This repository makes it easy to upload an SPDX SBOM to GitHub's dependency submission API. This lets you quickly receive Dependabot alerts for package manifests which GitHub doesn't directly support like pnpm or Paket by using existing off-the-shelf SBOM generators.
 
 
 ### Example workflow
-This workflow uses the [Microsoft sbom-tool](https://github.com/microsoft/sbom-tool). 
+
 ```yaml
+name: SBOM Submission to Dependabot
 
-name: SBOM upload
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
 
-on: 
-  workflow_dispatch:
-  push: 
-    branches: ["main"]
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
-  SBOM-upload:
-
+  submit_sboms:
+    name: "Submit SBOMs to Dependabot"
     runs-on: ubuntu-latest
-    permissions: 
-      id-token: write
-      contents: write
-      
     steps:
-    - uses: actions/checkout@v3
-    - name: Generate SBOM
-      run: | 
-        curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
-        chmod +x $RUNNER_TEMP/sbom-tool
-        $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn ${{ github.repository }} -pv 1.0.0 -ps OwnerName -nsb https://sbom.mycompany.com -V Verbose
-    - uses: actions/upload-artifact@v3
-      with:
-        name: sbom
-        path: _manifest/spdx_2.2
-    - name: SBOM upload 
-      uses: jhutchings1/spdx-to-dependency-graph-action@v0.0.1
-      with:
-        filePath: "_manifest/spdx_2.2/"
-```        
+      - uses: actions/checkout@v4
+
+      - name: Generate SBOMs
+        run: |
+          # Generate your SBOM files here using your preferred tool
+          # Examples: syft, microsoft/sbom-tool, cdxgen, etc.
+          ./tools/generate_sboms.sh
+
+      - name: Submit SBOMs to GitHub Dependency Graph
+        uses: traveltime-dev/spdx-to-dependency-graph-action@v0.0.3
+        with:
+          filePath: ./sboms/
+          filePattern: "*.json"
+```
